@@ -1,0 +1,6 @@
+<launch>
+  <node pkg="duckie_rock" name="node1" type="node1"/>
+  <node pkg="duckie_rock" name="node2" type="node2"/>
+  <node pkg="duckie_rock" name="node3" type="node3"/>
+
+</launch>

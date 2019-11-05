@@ -3,7 +3,6 @@ from math import sin,cos,pi
 import rospy
 from geometry_msgs.msg import Vector3
 import matplotlib.pyplot as plt
-import math
 
 class Odom_Calc:
     def __init__(self):
@@ -22,8 +21,8 @@ class Odom_Calc:
         delta_theta = (r-l)/(0.1)
         angle = self.theta + delta_theta/2
         delta_s = (l+r)/2
-        delta_x = delta_s*math.cos(angle)
-        delta_y = delta_s*math.sin(angle)
+        delta_x = delta_s*cos(angle)
+        delta_y = delta_s*sin(angle)
         self.x = self.x + delta_x
         self.y = self.y + delta_y
         self.theta = self.theta + delta_theta

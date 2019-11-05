@@ -1,0 +1,6 @@
+<launch>
+    <param name="/odom_csv_file_name" value="$(find duckie_rock)/wheel_ticks.csv" />
+    <node pkg="duckie_rock" name="wheel_tick_pub" type="wheel_tick_pub.py"/>
+    <node pkg="duckie_rock" name="odom_calc" type="odom_calc.py"/>
+
+</launch>

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(duckie_rock)
-
+cmake_policy(SET CMP0046 OLD)
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
 
@@ -53,7 +53,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
    FILES
    Point.msg
-
+   WheelsCmdStamped.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -216,8 +216,8 @@ add_dependencies(node1 node1_cpp)
 
 add_executable(node2 src/node2.cpp)
 target_link_libraries(node2 ${catkin_LIBRARIES})
-add_dependencies(node2 node2_cpp)
+add_dependencies(node2 node2_cpp duckie_rock_generate_messages_cpp)
 
 add_executable(node3 src/node3.cpp)
 target_link_libraries(node3 ${catkin_LIBRARIES})
-add_dependencies(node3 node3_cpp)
+add_dependencies(node3 node3_cpp duckie_rock_generate_messages_cpp)

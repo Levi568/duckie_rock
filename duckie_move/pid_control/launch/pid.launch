@@ -1,0 +1,27 @@
+<launch>
+	<arg name="veh" default="$(env VEHICLE_NAME)"/>
+	<arg name="ai_trafo_mode" default="cb" doc="'cb' for colo balance only; 'both' for color balance and linear trafo"/>
+	<arg name="ai_interval" default="5" doc="interval with which the linear trafo gets updated. color balance is performed every second."/>
+	<arg name="verbose" default="false"/>
+
+	<!-- start basic args -->
+	<include file="$(find duckietown_demos)/launch/master.launch">
+		<arg name="veh" value="$(arg veh)"/>
+		<arg name="visualization" default="true" />
+    <arg name="/camera/raw" default="true" />
+		<arg name="param_file_name" default="default" />
+		<arg name="line_detector_param_file_name" default="default" />
+		<arg name="ai_trafo_mode" value="$(arg ai_trafo_mode)"/>
+		<arg name="ai_interval" value="$(arg ai_interval)"/>
+		<arg name="/lane_following/stop_line_filter" default="false" />
+		<arg name="vehicle_avoidance" default="false"/>
+	</include>
+	<group>
+		<remap from ="pid/car_cmd" to ="vehicle_avoidance_control_node/car_cmd"/>
+		<remap from ="pid/lane_pose" to ="lane_filter_node/lane_pose"/>
+		<include file="$(find pid_control)/launch/lane_control.launch">
+			<arg name="veh" value="$(arg veh)"/>
+		</include>
+	</group>
+
+</launch>

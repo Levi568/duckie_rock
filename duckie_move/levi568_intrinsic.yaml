@@ -1,0 +1,23 @@
+camera_matrix:
+  cols: 3
+  data: [328.9154453058516, 0.0, 332.94358147492966, 0.0, 326.6444926029924, 246.64843845001982,
+    0.0, 0.0, 1.0]
+  rows: 3
+camera_name: levi568/camera_node
+distortion_coefficients:
+  cols: 5
+  data: [-0.2835196573735115, 0.05649455761787331, -0.0012327172877625648, -0.004820377622270639,
+    0.0]
+  rows: 1
+distortion_model: plumb_bob
+image_height: 480
+image_width: 640
+projection_matrix:
+  cols: 4
+  data: [226.04827880859375, 0.0, 324.55986631648557, 0.0, 0.0, 262.2388000488281,
+    249.21688946727045, 0.0, 0.0, 0.0, 1.0, 0.0]
+  rows: 3
+rectification_matrix:
+  cols: 3
+  data: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+  rows: 3

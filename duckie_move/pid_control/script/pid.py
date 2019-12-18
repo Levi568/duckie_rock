@@ -4,20 +4,23 @@ import math
 import sys
 import rospy
 import time
-import numpy as np
 
 class pid_class:
     def __init__(self):
         self.error_accum = 0
+
         self.previous_error_phi = 0
         self.previous_error_d = 0
+
+	#publisher & subscriber
         self.pub_control= rospy.Publisher("~car_cmd", Twist2DStamped, queue_size=1)
-        self.sub_lane_pose = rospy.Subscriber("~lane_pose", LanePose, self.pid_motion, queue_size=1)
+        self.sub_lane_pose = rospy.Subscriber("~lane_pose", LanePose, self.pid_motion_callback, queue_size=1)
 
         self.rate = rospy.Rate(10) # 10hz
         self.lp_msg = LanePose()
         self.t_start = None
-    def pid_motion(self, lp_msg):
+
+    def pid_motion_callback(self, lp_msg):
         kp_phi = 4.0
         kd_phi = 0.0
         ki_phi = 1.0
@@ -26,17 +29,17 @@ class pid_class:
         kd_d = 0.0
         ki_d = 1.0
 
-        t_prev = self.t_start
-        twist = Twist2DStamped()
+        t_prev = self.t_start 	  #initial time
+        twist = Twist2DStamped()  #create a object for the topic
 
         t = rospy.get_time()
-        if t_prev != None :
 
+        if t_prev:
                 dt = t - t_prev
-                error_d = 0 - lp_msg.d   # 0 is the desired value of distance from the center
-                error_phi = 0 - lp_msg.phi  # 0 is the desired value of angle
+                error_d = 0 - lp_msg.d      # 0 is the desired value of distance from the center of the lane
+                error_phi = 0 - lp_msg.phi  # 0 is the desired value of yaw angle
 
-                self.error_accum += error_d * dt
+                self.error_accum += error_d * dt 
                 integral = self.error_accum
 
                 if dt != 0:
@@ -46,13 +49,14 @@ class pid_class:
                     derivative_d = 0.0
                     derivative_phi = 0.0
 
-                control_phi = kp_phi*error_phi + kd_phi*derivative_phi + ki_phi*0 # acceleration from engine
+                control_phi = kp_phi*error_phi + kd_phi*derivative_phi + ki_phi*0
                 control_phi = max(min(control_phi, 10.0), -10.0)
-                control_d = kp_d*error_d + kd_d*derivative_d + ki_d*integral # acceleration from engine
+                control_d = kp_d*error_d + kd_d*derivative_d + ki_d*integral
                 control_d = max(min(control_d, 10.0), -10.0)
                 control = control_phi + control_d
-                twist.omega = control
-                twist.v = 0.3
+                
+		twist.omega = control
+                twist.v = 0.3  	 # set up the fixed velocity for the duckie
 
                 print("Error =", error_d, error_phi)
                 print("Control", control)
@@ -60,12 +64,12 @@ class pid_class:
                 self.previous_error_phi = error_phi
                 self.previous_error_d = error_d
                 t_prev = t
-                self.t_start = t
+                #self.t_start = t
 
-              self.t_start = t
-              self.pub_control.publish(twist)
+        self.t_start = t
+        self.pub_control.publish(twist)
 
 if __name__ == "__main__":
-              rospy.init_node("pid_node", anonymous=False)  # adapted to sonjas default file
+              rospy.init_node("pid_node", anonymous=False)
               pid_node = pid_class()
               rospy.spin()

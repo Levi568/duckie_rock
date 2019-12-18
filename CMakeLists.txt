@@ -54,7 +54,8 @@ add_message_files(
    FILES
    Point.msg
    WheelsCmdStamped.msg
- )
+   awesome.msg 
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(

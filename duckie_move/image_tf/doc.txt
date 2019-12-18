@@ -1,0 +1,32 @@
+In HW7 and HW8, you worked on tuning a different lane filter than the built in method. The algorithm is largely the same, but your numbers are likely different. Let's see how it compares to the Duckietown lane filter.
+
+    If you haven't already, run the indefinite navigation demo in the Duckietown set up in DAN 407. While this can be run from dts, it is best run from a docker container using roslaunch.
+        It is best to remove your MP2 code from your docker container first (this is as easy as sourcing catkin_ws instead of custom_ws at the start of your docker session).
+        Then run roslaunch duckietown_demos indefinite_navigation.launch
+        You will need to start dts duckiebot keyboard_control DUCKIEBOT_NAME in a separate terminal and press 'a' to start autonomy.
+    Create a ROS package that:
+        Contains a node that:
+            subscribes to "image_transformer_node/corrected_image/compressed"
+            Publishes the yellow and a white hough transform images as completed in HW8 in their own topics (you define)
+        Contains a launch file that:
+            Imports the indefinite navigation launch file
+            Sets the parameter "/hostname/line_detector_node/verbose" to true AFTER the indefinite navigation include. This outputs debug images we will use in the next step. (see this for reference http://wiki.ros.org/roslaunch/XML/param
+            Performs any remaps necessary to make the subscription above possible
+            Starts your node
+    Compare your node with the Duckietown node. Note that the Duckietown node outputs in a different visual format than our node, but you should be able to compare them visually.
+        While your launch file above is running, start up dts start_gui_tools DUCKIEBOT_NAME in another terminal
+        Start three instances of the image viewer using "rqt_image_view &" The '&' makes it run in the background, allowing you to enter more commands.
+        Select the Duckietown debug image topic in one viewer ("/hostname/line_detector_node/image_with_lines") and your topics in the other two.
+        Place your duckiebot in several locations inside Duckietown and see how the images compare
+        Run the autonomy mode (press 'a' in keyboard control) and watch the difference.
+        Demonstrate this live in class or by appointment.
+
+Rubric:
+
+    Your ROS package in your git repo:
+        Package setup: 40 points
+        Launch file: 50 points
+        Source code: 100 points
+        git tag: 10 points
+    A PDF with several images taken from step 3.4 above and a discussion about how you could improve your results: 150 points
+    Demonstration (video may be acceptable in extenuating circumstances) 50 points

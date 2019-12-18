@@ -1,0 +1,10 @@
+<launch>
+    <arg name="pkg_name" value="image_tf"/>
+    <arg name="node_name" default="hough"/>
+    <arg name="veh" doc="levi568"/>
+    <arg name="config" default="baseline" doc="Specify a config."/>
+
+    <group ns="$(arg veh)">
+        <node  name="$(arg node_name)" pkg="$(arg pkg_name)" type="$(arg node_name).py" output="screen" clear_params="true" required="true"/>
+    </group>
+</launch>
